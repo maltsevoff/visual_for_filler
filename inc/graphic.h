@@ -57,4 +57,6 @@ typedef struct	s_fdf
 
 int				logic(t_fdf *game);
 
+void			free_map(char **map);
+
 #endif

@@ -12,7 +12,7 @@
 
 #include "graphic.h"
 
-t_img		open_window()
+t_img		*open_window()
 {
 	t_img	*img;
 
@@ -46,14 +46,14 @@ void		read_players(t_fdf *game)
 		else if (ft_strstr(line, "exec p2"))
 		{
 			set_player(line, game->p2);
-			ft_strdel(line);
+			ft_strdel(&line);
 			return ;
 		}
-		ft_strdel(line);
+		ft_strdel(&line);
 	}
 }
 
-int			main(int argc, char **argv)
+int			main(void)
 {
 	t_fdf	*game;
 

@@ -17,7 +17,7 @@ OBJ_DIR := ./obj/
 INC_DIR := ./inc/
 LIB_DIR := ./lib/
 
-SRC = main.c logic.c
+SRC = main.c logic.c extra.c
 
 OBJ = $(addprefix $(OBJ_DIR), $(SRC:.c=.o))
 
