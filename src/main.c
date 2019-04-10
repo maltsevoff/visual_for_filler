@@ -26,27 +26,32 @@ t_img		*open_window()
 	return (img);
 }
 
-void		set_player(char *line, char *player)
+void		set_player_name(char *line, char *player)
 {
 	line = ft_strrchr(line, '/');
-	player = ft_strnew(ft_strchr(line, '.') - line);
-	player = ft_strncpy(player, line, ft_strchr(line, '.') - line);
+	player = ft_strdup(line);
+	// player = ft_strnew(ft_strchr(line, '.') - line);
+	// player = ft_strncpy(player, line, ft_strchr(line, '.') - line);
 }
 
 void		read_players(t_fdf *game)
 {
 	char	*line;
 
+	game->p1 = ft_memalloc(sizeof(t_player));
+	game->p2 = ft_memalloc(sizeof(t_player));
 	while (get_next_line(FD, &line) > 0)
 	{
 		if (ft_strstr(line, "exec p1"))
 		{
-			set_player(line, game->p1);
+			set_player_name(line, game->p1->name);
+			game->p1->col = 0x0000FF;
 		}
 		else if (ft_strstr(line, "exec p2"))
 		{
-			set_player(line, game->p2);
+			set_player_name(line, game->p2->name);
 			ft_strdel(&line);
+			game->p2->col = 0xFF0000;
 			return ;
 		}
 		ft_strdel(&line);
@@ -64,7 +69,7 @@ int			main(void)
 	{
 		if (logic(game) == 0)
 			exit (0);
-	}
 	mlx_loop(game->img->mlx_ptr);
+	}
 	return (0);
 }

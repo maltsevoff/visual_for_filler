@@ -36,8 +36,14 @@ void	read_map(t_fdf *game, char *line)
 	int			i;
 	int			x;
 	char		**map;
+	int			mult;
 
 	i = -1;
+	// if (game->m_y < game->m_x)
+	// 	mult = WIN_WIDTH / game->m_x / 2;
+	// else
+	// 	mult = WIN_HEIGHT / game->m_y / 2;
+	mult = 30;
 	if (flag == 0)
 		malloc_map(game, line);
 	ft_strdel(&line);
@@ -50,8 +56,8 @@ void	read_map(t_fdf *game, char *line)
 		x = -1;
 		while (++x < game->m_x)
 		{
-			game->map[i][x].x = x;
-			game->map[i][x].y = i;
+			game->map[i][x].x = (x - (game->m_x / 2)) * mult;
+			game->map[i][x].y = (i - (game->m_y / 2)) * mult;
 			game->map[i][x].z = map[1][x];
 		}
 		free_map(map);
@@ -66,7 +72,7 @@ void	show_map(t_fdf *game)
 	int		x;
 
 	y = -1;
-	printf("player1: %s | player2: %s\n", game->p1, game->p2);
+	printf("player1: %s | player2: %s\n", game->p1->name, game->p2->name);
 	while (++y < game->m_y)
 	{
 		x = -1;
@@ -85,11 +91,12 @@ int		logic(t_fdf *game)
 	{
 		if (ft_strstr(line, "Plateau"))
 		{
-			printf("tut\n");
 			read_map(game, line);
+			make_picture(game);
+			mlx_put_image_to_window(game->img->mlx_ptr, game->img->mlx_win, game->img->ptr, 0, 0);
 			// ft_strdel(&line);
-			show_map(game);
-			return (0);
+			// show_map(game);
+			return (1);
 		}
 		else
 			ft_strdel(&line);

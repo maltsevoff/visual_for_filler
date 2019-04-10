@@ -45,17 +45,24 @@ typedef struct	s_img
 	int			endian;
 }				t_img;
 
+typedef struct	s_player
+{
+	int			col;
+	char		*name;
+}				t_player;
+
 typedef struct	s_fdf
 {
 	t_img			*img;
 	int				m_y;
 	int				m_x;
 	t_coord			**map;
-	char			*p1;
-	char			*p2;
+	t_player		*p1;
+	t_player		*p2;
 }				t_fdf;
 
 int				logic(t_fdf *game);
+int				make_picture(t_fdf *game);
 
 void			free_map(char **map);
 
