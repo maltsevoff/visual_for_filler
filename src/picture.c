@@ -55,19 +55,31 @@ void	brethen_line(t_coord p0, t_coord p1, t_fdf *game)
 	}
 }
 
+void		fill_pixels(t_coord start, t_coord end, int color, t_fdf *game)
+{
+	int		tm_x;
+
+	tm_x = start.x;
+	while (start.y < end.y)
+	{
+		start.x = tm_x;
+		while (start.x < end.x)
+		{
+			ft_put_pixel(start.x, start.y, game, color);
+			start.x++;
+		}
+		start.y++;
+	}
+}
+
 void		choose_sector(t_fdf *game, int x, int y)
 {
-	int		i;
-	t_coord	tmp;
-
-	i = -1;
-	tmp = game->map[y][x];
 	if (ft_strchr("xXoO", game->map[y][x].z))
 	{
-		while (tmp.y + ++i < game->map[y + 1][x].y)
-		{
-			brethen_line(tmp)
-		}
+		if (ft_strchr("xX", game->map[y][x].z))
+			fill_pixels(game->map[y][x], game->map[y + 1][x + 1], game->p1->col, game);
+		else
+			fill_pixels(game->map[y][x], game->map[y + 1][x + 1], game->p2->col, game);
 	}
 	else
 	{
@@ -93,7 +105,7 @@ int			make_picture(t_fdf *game)
 		{
 			ft_put_pixel(game->map[y][x].x, game->map[y][x].y,
 					game, game->map[y][x].color);
-			choose_sector(elem, game);
+			choose_sector(game, x, y);
 			x++;
 		}
 		y++;
