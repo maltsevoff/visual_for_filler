@@ -55,6 +55,29 @@ void	brethen_line(t_coord p0, t_coord p1, t_fdf *game)
 	}
 }
 
+void		choose_sector(t_fdf *game, int x, int y)
+{
+	int		i;
+	t_coord	tmp;
+
+	i = -1;
+	tmp = game->map[y][x];
+	if (ft_strchr("xXoO", game->map[y][x].z))
+	{
+		while (tmp.y + ++i < game->map[y + 1][x].y)
+		{
+			brethen_line(tmp)
+		}
+	}
+	else
+	{
+		if (x + 1 != game->m_x)
+			brethen_line(game->map[y][x], game->map[y][x + 1], game);
+		if (y + 1 != game->m_y)
+			brethen_line(game->map[y][x], game->map[y + 1][x], game);
+	}
+}
+
 int			make_picture(t_fdf *game)
 {
 	int		*i;
@@ -70,10 +93,7 @@ int			make_picture(t_fdf *game)
 		{
 			ft_put_pixel(game->map[y][x].x, game->map[y][x].y,
 					game, game->map[y][x].color);
-			if (x + 1 != game->m_x)
-				brethen_line(game->map[y][x], game->map[y][x + 1], game);
-			if (y + 1 != game->m_y)
-				brethen_line(game->map[y][x], game->map[y + 1][x], game);
+			choose_sector(elem, game);
 			x++;
 		}
 		y++;
