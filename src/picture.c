@@ -40,7 +40,7 @@ void	brethen_line(t_coord p0, t_coord p1, t_fdf *game)
 	error.x = delta.x - delta.y;
 	while (p0.x != p1.x || p0.y != p1.y)
 	{
-		ft_put_pixel(p0.x, p0.y, game, game->p1->col);
+		ft_put_pixel(p0.x, p0.y, game, WHITE);
 		error.y = error.x * 2;
 		if (error.y > -delta.y)
 		{
@@ -59,7 +59,8 @@ void		fill_pixels(t_coord start, t_coord end, int color, t_fdf *game)
 {
 	int		tm_x;
 
-	tm_x = start.x;
+	tm_x = start.x + 1;
+	start.y++;
 	while (start.y < end.y)
 	{
 		start.x = tm_x;
@@ -74,20 +75,19 @@ void		fill_pixels(t_coord start, t_coord end, int color, t_fdf *game)
 
 void		choose_sector(t_fdf *game, int x, int y)
 {
-	if (ft_strchr("xXoO", game->map[y][x].z))
+	if (x + 1 < game->m_x)
+		brethen_line(game->map[y][x], game->map[y][x + 1], game);
+	if (y + 1 < game->m_y)
+		brethen_line(game->map[y][x], game->map[y + 1][x], game);
+	if (ft_strchr("xXoO", game->map[y][x].z) && y + 1 < game->m_y && x + 1 < game->m_x)
 	{
+		// printf("cor: %d %d\n", y, x);
 		if (ft_strchr("xX", game->map[y][x].z))
 			fill_pixels(game->map[y][x], game->map[y + 1][x + 1], game->p1->col, game);
 		else
 			fill_pixels(game->map[y][x], game->map[y + 1][x + 1], game->p2->col, game);
 	}
-	else
-	{
-		if (x + 1 != game->m_x)
-			brethen_line(game->map[y][x], game->map[y][x + 1], game);
-		if (y + 1 != game->m_y)
-			brethen_line(game->map[y][x], game->map[y + 1][x], game);
-	}
+	// printf("after\n");
 }
 
 int			make_picture(t_fdf *game)
@@ -95,7 +95,14 @@ int			make_picture(t_fdf *game)
 	int		*i;
 	int		y;
 	int		x;
+	static int	flag = 0;
 
+	if (flag == 1)
+	{
+		game->img->ptr = mlx_new_image(game->img->mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
+		game->img->addr = mlx_get_data_addr(game->img->ptr, &game->img->bpp,
+			&game->img->size_line, &game->img->endian);
+	}
 	i = (int *)game->img->addr;
 	y = 0;
 	while (y < game->m_y)
@@ -110,5 +117,7 @@ int			make_picture(t_fdf *game)
 		}
 		y++;
 	}
+	flag = 1;
+	printf("%d %d\n", y, x);
 	return (0);
 }

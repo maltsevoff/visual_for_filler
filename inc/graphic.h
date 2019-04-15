@@ -16,6 +16,8 @@
 # define WIN_HEIGHT 1000
 # define WIN_WIDTH 1000
 
+# define X_MASK 0
+
 # define FD 0
 
 # define WHITE 0xFFFFFF
@@ -49,6 +51,7 @@ typedef struct	s_player
 {
 	int			col;
 	char		*name;
+	int			score;
 }				t_player;
 
 typedef struct	s_fdf
@@ -63,7 +66,10 @@ typedef struct	s_fdf
 
 int				logic(t_fdf *game);
 int				make_picture(t_fdf *game);
+void			end_game(t_fdf *game, char *line);
+void			check_score(t_fdf *game);
 
 void			free_map(char **map);
+void			key_init(t_fdf *game);
 
 #endif

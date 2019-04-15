@@ -25,7 +25,7 @@ void	malloc_map(t_fdf *game, char *line)
 	game->map = (t_coord **)ft_memalloc(sizeof(t_coord *) * game->m_y);
 	while (y < game->m_y)
 	{
-		game->map[y] = ft_memalloc(sizeof(t_coord) * game->m_x);
+		game->map[y] = (t_coord *)ft_memalloc(sizeof(t_coord) * game->m_x);
 		y++;
 	}
 }
@@ -39,10 +39,6 @@ void	read_map(t_fdf *game, char *line)
 	int			mult;
 
 	i = -1;
-	// if (game->m_y < game->m_x)
-	// 	mult = WIN_WIDTH / game->m_x / 2;
-	// else
-	// 	mult = WIN_HEIGHT / game->m_y / 2;
 	mult = 30;
 	if (flag == 0)
 		malloc_map(game, line);
@@ -87,19 +83,33 @@ int		logic(t_fdf *game)
 {
 	char		*line;
 
-	while (get_next_line(FD, &line))
+	while (get_next_line(FD, &line) > 0)
 	{
+		// printf("%s\n", line);
 		if (ft_strstr(line, "Plateau"))
 		{
+			printf("in logic 1\n");
 			read_map(game, line);
+			printf("in logic 2\n");
 			make_picture(game);
+			printf("in logic 3\n");
 			mlx_put_image_to_window(game->img->mlx_ptr, game->img->mlx_win, game->img->ptr, 0, 0);
-			// ft_strdel(&line);
-			// show_map(game);
-			return (1);
+			printf("in logic 4\n");
+			mlx_destroy_image(game->img->mlx_ptr, game->img->ptr);
+			printf("in logic 5\n");
+			// mlx_do_sync(game->img->mlx_ptr);
+			printf("in logic 6\n");
+
+		}
+		else if (ft_strstr(line, "fin"))
+		{
+			end_game(game, line);
+			check_score(game);
+			exit(0);
 		}
 		else
 			ft_strdel(&line);
 	}
-	return (1);
+	mlx_loop(game->img->mlx_ptr);
+	return (0);
 }

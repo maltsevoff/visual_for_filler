@@ -64,12 +64,8 @@ int			main(void)
 
 	game = ft_memalloc(sizeof(t_fdf));
 	game->img = open_window();
+	key_init(game);
 	read_players(game);
-	while (1)
-	{
-		if (logic(game) == 0)
-			exit (0);
-	mlx_loop(game->img->mlx_ptr);
-	}
+	logic(game);
 	return (0);
 }
