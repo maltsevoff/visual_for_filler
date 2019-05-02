@@ -64,6 +64,8 @@ typedef struct	s_fdf
 	t_player		*p2;
 }				t_fdf;
 
+int				g_fd;
+
 int				logic(t_fdf *game);
 int				make_picture(t_fdf *game);
 void			end_game(t_fdf *game, char *line);

@@ -39,15 +39,19 @@ void	read_map(t_fdf *game, char *line)
 	int			mult;
 
 	i = -1;
-	mult = 30;
+	// mult = 30;
 	if (flag == 0)
 		malloc_map(game, line);
 	ft_strdel(&line);
-	get_next_line(FD, &line);
+	if (game->m_x > game->m_y)
+		mult = WIN_WIDTH / game->m_x / 2;
+	else
+		mult = WIN_WIDTH / game->m_y / 2;
+	get_next_line(g_fd, &line);
 	ft_strdel(&line);
 	while (++i < game->m_y)
 	{
-		get_next_line(FD, &line);
+		get_next_line(g_fd, &line);
 		map = ft_strsplit(line, ' ');
 		x = -1;
 		while (++x < game->m_x)
@@ -79,33 +83,33 @@ void	show_map(t_fdf *game)
 	}
 }
 
+void	put_player_name(t_fdf *game)
+{
+	mlx_string_put(game->img->mlx_ptr, game->img->mlx_win, 100, 100, game->p1->col, game->p1->name);
+	mlx_string_put(game->img->mlx_ptr, game->img->mlx_win, 800, 100, game->p2->col, game->p2->name);
+}
+
 int		logic(t_fdf *game)
 {
 	char		*line;
 
-	while (get_next_line(FD, &line) > 0)
+	while (get_next_line(g_fd, &line) > 0)
 	{
 		// printf("%s\n", line);
 		if (ft_strstr(line, "Plateau"))
 		{
-			printf("in logic 1\n");
 			read_map(game, line);
-			printf("in logic 2\n");
 			make_picture(game);
-			printf("in logic 3\n");
 			mlx_put_image_to_window(game->img->mlx_ptr, game->img->mlx_win, game->img->ptr, 0, 0);
-			printf("in logic 4\n");
+			put_player_name(game);
+			mlx_do_sync(game->img->mlx_ptr);
 			mlx_destroy_image(game->img->mlx_ptr, game->img->ptr);
-			printf("in logic 5\n");
-			// mlx_do_sync(game->img->mlx_ptr);
-			printf("in logic 6\n");
-
 		}
 		else if (ft_strstr(line, "fin"))
 		{
 			end_game(game, line);
 			check_score(game);
-			exit(0);
+			break;
 		}
 		else
 			ft_strdel(&line);

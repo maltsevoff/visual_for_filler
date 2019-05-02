@@ -16,7 +16,7 @@ t_img		*open_window()
 {
 	t_img	*img;
 
-	img = ft_memalloc(sizeof(img));
+	img = (t_img *)ft_memalloc(sizeof(t_img));
 	img->mlx_ptr = mlx_init();
 	img->mlx_win = mlx_new_window(img->mlx_ptr, WIN_WIDTH, WIN_HEIGHT,
 					"filler");
@@ -26,12 +26,16 @@ t_img		*open_window()
 	return (img);
 }
 
-void		set_player_name(char *line, char *player)
+char		*set_player_name(char *line)
 {
-	line = ft_strrchr(line, '/');
-	player = ft_strdup(line);
-	// player = ft_strnew(ft_strchr(line, '.') - line);
-	// player = ft_strncpy(player, line, ft_strchr(line, '.') - line);
+	char	*name;
+
+	line = ft_strrchr(line, '/') + 1;
+	// name = ft_strdup(line);
+	// name[ft_strlen(name) - 1] = '\0';
+	name = ft_strnew(ft_strchr(line, '.') - line);
+	name = ft_strncpy(name, line, ft_strchr(line, '.') - line);
+	return (name);
 }
 
 void		read_players(t_fdf *game)
@@ -40,16 +44,16 @@ void		read_players(t_fdf *game)
 
 	game->p1 = ft_memalloc(sizeof(t_player));
 	game->p2 = ft_memalloc(sizeof(t_player));
-	while (get_next_line(FD, &line) > 0)
+	while (get_next_line(g_fd, &line) > 0)
 	{
 		if (ft_strstr(line, "exec p1"))
 		{
-			set_player_name(line, game->p1->name);
+			game->p1->name = set_player_name(line);
 			game->p1->col = 0x0000FF;
 		}
 		else if (ft_strstr(line, "exec p2"))
 		{
-			set_player_name(line, game->p2->name);
+			game->p2->name = set_player_name(line);
 			ft_strdel(&line);
 			game->p2->col = 0xFF0000;
 			return ;
@@ -62,10 +66,13 @@ int			main(void)
 {
 	t_fdf	*game;
 
+	// g_fd = open("game.txt", O_RDONLY);
+	g_fd = 0;
 	game = ft_memalloc(sizeof(t_fdf));
 	game->img = open_window();
 	key_init(game);
 	read_players(game);
+	printf("map: y: %d x: %d\n", game->m_y, game->m_x);
 	logic(game);
 	return (0);
 }
