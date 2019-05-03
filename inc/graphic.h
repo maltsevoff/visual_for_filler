@@ -13,8 +13,8 @@
 #ifndef GRAPHIC_H
 # define GRAPHIC_H
 
-# define WIN_HEIGHT 1000
-# define WIN_WIDTH 1000
+# define WIN_H 1000
+# define WIN_W 1000
 
 # define X_MASK 0
 

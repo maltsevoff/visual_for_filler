@@ -48,7 +48,6 @@ void	check_score(t_fdf *game)
 		printf("WIN 1 !!!!!!!! %s\n", game->p1->name);
 		mlx_string_put(game->img->mlx_ptr, game->img->mlx_win, 450, 800,
 			game->p1->col, "Player 1 WIN");
-
 	}
 	else if (game->p1->score < game->p2->score)
 	{
@@ -62,7 +61,7 @@ void	check_score(t_fdf *game)
 		mlx_string_put(game->img->mlx_ptr, game->img->mlx_win, 450, 800,
 			WHITE, "EQUAL SCORE");
 		if (game->p1->score == 0 && game->p2->score == 0)
-		mlx_string_put(game->img->mlx_ptr, game->img->mlx_win, 450, 850,
-			WHITE, "invalid map");
+			mlx_string_put(game->img->mlx_ptr, game->img->mlx_win, 450, 850,
+				WHITE, "invalid map");
 	}
 }

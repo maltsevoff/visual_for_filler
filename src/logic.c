@@ -30,24 +30,13 @@ void	malloc_map(t_fdf *game, char *line)
 	}
 }
 
-void	read_map(t_fdf *game, char *line)
+void	read_map2(t_fdf *game, char *line, float mult)
 {
-	static int	flag = 0;
 	int			i;
 	int			x;
 	char		**map;
-	int			mult;
 
 	i = -1;
-	if (flag == 0)
-		malloc_map(game, line);
-	ft_strdel(&line);
-	if (game->m_x > game->m_y)
-		mult = (WIN_WIDTH / game->m_x) / 4 * 3;
-	else
-		mult = (WIN_WIDTH / game->m_y) / 4 * 3;
-	get_next_line(g_fd, &line);
-	ft_strdel(&line);
 	while (++i < game->m_y)
 	{
 		get_next_line(g_fd, &line);
@@ -62,30 +51,32 @@ void	read_map(t_fdf *game, char *line)
 		free_map(map);
 		ft_strdel(&line);
 	}
+}
+
+void	read_map(t_fdf *game, char *line)
+{
+	static int	flag = 0;
+	int			mult;
+
+	if (flag == 0)
+		malloc_map(game, line);
+	ft_strdel(&line);
+	if (game->m_x > game->m_y)
+		mult = (WIN_W / game->m_x) / 4 * 3;
+	else
+		mult = (WIN_W / game->m_y) / 4 * 3;
+	get_next_line(g_fd, &line);
+	ft_strdel(&line);
+	read_map2(game, line, mult);
 	flag = 1;
 }
 
-// void	show_map(t_fdf *game)
-// {
-// 	int		y;
-// 	int		x;
-
-// 	y = -1;
-// 	printf("player1: %s | player2: %s\n", game->p1->name, game->p2->name);
-// 	while (++y < game->m_y)
-// 	{
-// 		x = -1;
-// 		while (++x < game->m_x)
-// 		{
-// 			printf("%d %d %c\n", game->map[y][x].y, game->map[y][x].x, game->map[y][x].z);
-// 		}
-// 	}
-// }
-
 void	put_player_name(t_fdf *game)
 {
-	mlx_string_put(game->img->mlx_ptr, game->img->mlx_win, 100, 100, game->p1->col, game->p1->name);
-	mlx_string_put(game->img->mlx_ptr, game->img->mlx_win, 800, 100, game->p2->col, game->p2->name);
+	mlx_string_put(game->img->mlx_ptr, game->img->mlx_win, 100, 100,
+		game->p1->col, game->p1->name);
+	mlx_string_put(game->img->mlx_ptr, game->img->mlx_win, 800, 100,
+		game->p2->col, game->p2->name);
 }
 
 int		logic(t_fdf *game)
@@ -93,27 +84,24 @@ int		logic(t_fdf *game)
 	char		*line;
 
 	while (get_next_line(g_fd, &line) > 0)
-	{
 		if (ft_strstr(line, "Plateau"))
 		{
 			read_map(game, line);
 			make_picture(game);
-			mlx_put_image_to_window(game->img->mlx_ptr, game->img->mlx_win, game->img->ptr, 0, 0);
+			mlx_put_image_to_window(game->img->mlx_ptr, game->img->mlx_win,
+				game->img->ptr, 0, 0);
 			put_player_name(game);
 			mlx_do_sync(game->img->mlx_ptr);
 			mlx_destroy_image(game->img->mlx_ptr, game->img->ptr);
 		}
-		// else if (ft_strstr(line, "fin") || ft_strstr(line, "<got (X): [0, 0]")
-				// || ft_strstr(line, "<got (O): [0, 0]"))
 		else if (ft_strstr(line, "fin"))
 		{
 			end_game(game, line);
 			check_score(game);
-			break;
+			break ;
 		}
 		else
 			ft_strdel(&line);
-	}
 	mlx_loop(game->img->mlx_ptr);
 	return (0);
 }

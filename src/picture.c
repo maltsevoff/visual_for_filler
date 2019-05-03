@@ -12,13 +12,13 @@
 
 #include "graphic.h"
 
-void	ft_put_pixel(int x, int y, t_fdf *fdf, int color)
+void		ft_put_pixel(int x, int y, t_fdf *fdf, int color)
 {
 	int		i;
 
-	x += WIN_WIDTH / 2;
-	y += WIN_HEIGHT / 2;
-	if ((x >= 0 && x < WIN_WIDTH) && (y >= 0 && y < WIN_HEIGHT))
+	x += WIN_W / 2;
+	y += WIN_H / 2;
+	if ((x >= 0 && x < WIN_W) && (y >= 0 && y < WIN_H))
 	{
 		i = ((x * fdf->img->bpp / 8) + (y * fdf->img->size_line));
 		fdf->img->addr[i] = color;
@@ -27,7 +27,7 @@ void	ft_put_pixel(int x, int y, t_fdf *fdf, int color)
 	}
 }
 
-void	brethen_line(t_coord p0, t_coord p1, t_fdf *game)
+void		brethen_line(t_coord p0, t_coord p1, t_fdf *game)
 {
 	t_coord delta;
 	t_coord	sign;
@@ -79,43 +79,43 @@ void		choose_sector(t_fdf *game, int x, int y)
 		brethen_line(game->map[y][x], game->map[y][x + 1], game);
 	if (y + 1 < game->m_y)
 		brethen_line(game->map[y][x], game->map[y + 1][x], game);
-	if (ft_strchr("xXoO", game->map[y][x].z) && y + 1 < game->m_y && x + 1 < game->m_x)
+	if (ft_strchr("xXoO", game->map[y][x].z) && y + 1 < game->m_y &&
+		x + 1 < game->m_x)
 	{
 		if (ft_strchr("xX", game->map[y][x].z))
-			fill_pixels(game->map[y][x], game->map[y + 1][x + 1], game->p2->col, game);
+			fill_pixels(game->map[y][x], game->map[y + 1][x + 1],
+				game->p2->col, game);
 		else
-			fill_pixels(game->map[y][x], game->map[y + 1][x + 1], game->p1->col, game);
+			fill_pixels(game->map[y][x], game->map[y + 1][x + 1],
+				game->p1->col, game);
 	}
 }
 
 int			make_picture(t_fdf *game)
 {
-	int		*i;
-	int		y;
-	int		x;
+	int			*i;
+	int			y;
+	int			x;
 	static int	flag = 0;
 
 	if (flag == 1)
 	{
-		game->img->ptr = mlx_new_image(game->img->mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
+		game->img->ptr = mlx_new_image(game->img->mlx_ptr, WIN_W, WIN_H);
 		game->img->addr = mlx_get_data_addr(game->img->ptr, &game->img->bpp,
 			&game->img->size_line, &game->img->endian);
 	}
 	i = (int *)game->img->addr;
-	y = 0;
-	while (y < game->m_y)
+	y = -1;
+	while (++y < game->m_y)
 	{
-		x = 0;
-		while (x < game->m_x)
+		x = -1;
+		while (++x < game->m_x)
 		{
 			ft_put_pixel(game->map[y][x].x, game->map[y][x].y,
 					game, game->map[y][x].color);
 			choose_sector(game, x, y);
-			x++;
 		}
-		y++;
 	}
 	flag = 1;
-	printf("%d %d\n", y, x);
 	return (0);
 }

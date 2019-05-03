@@ -12,15 +12,15 @@
 
 #include "graphic.h"
 
-t_img		*open_window()
+t_img		*open_window(void)
 {
 	t_img	*img;
 
 	img = (t_img *)ft_memalloc(sizeof(t_img));
 	img->mlx_ptr = mlx_init();
-	img->mlx_win = mlx_new_window(img->mlx_ptr, WIN_WIDTH, WIN_HEIGHT,
+	img->mlx_win = mlx_new_window(img->mlx_ptr, WIN_W, WIN_H,
 					"filler");
-	img->ptr = mlx_new_image(img->mlx_ptr, WIN_WIDTH, WIN_HEIGHT);
+	img->ptr = mlx_new_image(img->mlx_ptr, WIN_W, WIN_H);
 	img->addr = mlx_get_data_addr(img->ptr, &img->bpp, &img->size_line,
 				&img->endian);
 	return (img);
