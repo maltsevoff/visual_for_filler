@@ -33,7 +33,7 @@ typedef struct	s_coord
 	float		x;
 	float		y;
 	float		z;
-	int		color;
+	int			color;
 }				t_coord;
 
 typedef struct	s_img
