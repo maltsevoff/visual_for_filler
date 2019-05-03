@@ -39,7 +39,6 @@ void	read_map(t_fdf *game, char *line)
 	int			mult;
 
 	i = -1;
-	// mult = 30;
 	if (flag == 0)
 		malloc_map(game, line);
 	ft_strdel(&line);
@@ -95,7 +94,6 @@ int		logic(t_fdf *game)
 
 	while (get_next_line(g_fd, &line) > 0)
 	{
-		// printf("%s\n", line);
 		if (ft_strstr(line, "Plateau"))
 		{
 			read_map(game, line);

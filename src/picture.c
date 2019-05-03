@@ -81,13 +81,11 @@ void		choose_sector(t_fdf *game, int x, int y)
 		brethen_line(game->map[y][x], game->map[y + 1][x], game);
 	if (ft_strchr("xXoO", game->map[y][x].z) && y + 1 < game->m_y && x + 1 < game->m_x)
 	{
-		// printf("cor: %d %d\n", y, x);
 		if (ft_strchr("xX", game->map[y][x].z))
-			fill_pixels(game->map[y][x], game->map[y + 1][x + 1], game->p1->col, game);
-		else
 			fill_pixels(game->map[y][x], game->map[y + 1][x + 1], game->p2->col, game);
+		else
+			fill_pixels(game->map[y][x], game->map[y + 1][x + 1], game->p1->col, game);
 	}
-	// printf("after\n");
 }
 
 int			make_picture(t_fdf *game)

@@ -31,8 +31,6 @@ char		*set_player_name(char *line)
 	char	*name;
 
 	line = ft_strrchr(line, '/') + 1;
-	// name = ft_strdup(line);
-	// name[ft_strlen(name) - 1] = '\0';
 	name = ft_strnew(ft_strchr(line, '.') - line);
 	name = ft_strncpy(name, line, ft_strchr(line, '.') - line);
 	return (name);
@@ -66,7 +64,6 @@ int			main(void)
 {
 	t_fdf	*game;
 
-	// g_fd = open("game.txt", O_RDONLY);
 	g_fd = 0;
 	game = ft_memalloc(sizeof(t_fdf));
 	game->img = open_window();
