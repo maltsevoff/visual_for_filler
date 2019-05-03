@@ -43,9 +43,9 @@ void	read_map(t_fdf *game, char *line)
 		malloc_map(game, line);
 	ft_strdel(&line);
 	if (game->m_x > game->m_y)
-		mult = WIN_WIDTH / game->m_x / 2;
+		mult = (WIN_WIDTH / game->m_x) / 4 * 3;
 	else
-		mult = WIN_WIDTH / game->m_y / 2;
+		mult = (WIN_WIDTH / game->m_y) / 4 * 3;
 	get_next_line(g_fd, &line);
 	ft_strdel(&line);
 	while (++i < game->m_y)
@@ -65,22 +65,22 @@ void	read_map(t_fdf *game, char *line)
 	flag = 1;
 }
 
-void	show_map(t_fdf *game)
-{
-	int		y;
-	int		x;
+// void	show_map(t_fdf *game)
+// {
+// 	int		y;
+// 	int		x;
 
-	y = -1;
-	printf("player1: %s | player2: %s\n", game->p1->name, game->p2->name);
-	while (++y < game->m_y)
-	{
-		x = -1;
-		while (++x < game->m_x)
-		{
-			printf("%d %d %c\n", game->map[y][x].y, game->map[y][x].x, game->map[y][x].z);
-		}
-	}
-}
+// 	y = -1;
+// 	printf("player1: %s | player2: %s\n", game->p1->name, game->p2->name);
+// 	while (++y < game->m_y)
+// 	{
+// 		x = -1;
+// 		while (++x < game->m_x)
+// 		{
+// 			printf("%d %d %c\n", game->map[y][x].y, game->map[y][x].x, game->map[y][x].z);
+// 		}
+// 	}
+// }
 
 void	put_player_name(t_fdf *game)
 {
@@ -103,6 +103,8 @@ int		logic(t_fdf *game)
 			mlx_do_sync(game->img->mlx_ptr);
 			mlx_destroy_image(game->img->mlx_ptr, game->img->ptr);
 		}
+		// else if (ft_strstr(line, "fin") || ft_strstr(line, "<got (X): [0, 0]")
+				// || ft_strstr(line, "<got (O): [0, 0]"))
 		else if (ft_strstr(line, "fin"))
 		{
 			end_game(game, line);

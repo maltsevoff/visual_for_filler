@@ -30,9 +30,9 @@
 
 typedef struct	s_coord
 {
-	int		x;
-	int		y;
-	int		z;
+	float		x;
+	float		y;
+	float		z;
 	int		color;
 }				t_coord;
 

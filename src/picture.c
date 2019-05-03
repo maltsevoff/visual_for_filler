@@ -33,8 +33,8 @@ void	brethen_line(t_coord p0, t_coord p1, t_fdf *game)
 	t_coord	sign;
 	t_coord	error;
 
-	delta.x = abs(p1.x - p0.x);
-	delta.y = abs(p1.y - p0.y);
+	delta.x = fabsf(p1.x - p0.x);
+	delta.y = fabsf(p1.y - p0.y);
 	sign.x = p0.x < p1.x ? 1 : -1;
 	sign.y = p0.y < p1.y ? 1 : -1;
 	error.x = delta.x - delta.y;

@@ -61,5 +61,8 @@ void	check_score(t_fdf *game)
 		printf("EQUAL SCORE !!!!!!!!\n");
 		mlx_string_put(game->img->mlx_ptr, game->img->mlx_win, 450, 800,
 			WHITE, "EQUAL SCORE");
+		if (game->p1->score == 0 && game->p2->score == 0)
+		mlx_string_put(game->img->mlx_ptr, game->img->mlx_win, 450, 850,
+			WHITE, "invalid map");
 	}
 }
